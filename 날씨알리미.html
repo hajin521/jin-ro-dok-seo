@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>날씨 알리미</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #weather-container {
+            margin-top: 20px;
+        }
+
+        .city-button {
+            margin: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+
+
+</head>
+
+
+
+<body>
+
+
+    <h1>날씨 알리미</h1>
+    <div>
+        <button class="city-button" onclick="getWea('Seoul')">서울</button>
+        <button class="city-button" onclick="getWea('Osan')">오산</button>
+        <button class="city-button" onclick="getWea('Suwon-si')">수원</button>
+        <button class="city-button" onclick="getWea('Hwaseong-si')">화성</button>
+    </div>
+    <div id="weather-container"></div>
+
+    <script>
+        function getWea(city) {
+            var Key = '40d7d8f8dae183594a1fcdf261e8357f'; 
+            var Url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${Key}&units=metric`;
+
+            // API 호출
+            fetch(Url)
+                .then(response => response.json())
+                .then(data => {
+                    // 날씨 정보
+                    var weatherHtml = 
+                    `
+                        <h2>${data.name}의 현재 날씨</h2>
+                        <p>온도: ${data.main.temp} °C</p>
+                        <p>습도: ${data.main.humidity} %</p>
+                        <p>날씨: ${data.weather[0].description}</p>
+                    `;
+
+                    // 결과 표시
+                    document.getElementById('weather-container').innerHTML = weatherHtml;
+                })
+                .catch(error => {
+                    console.error('날씨 정보를 가져오는 중 오류가 발생했습니다.', error);
+                    document.getElementById('weather-container').innerHTML = '<p>날씨 정보를 가져오는 중 오류가 발생했습니다.</p>';
+                });
+        }
+    </script>
+
+
+</body>
+
+
+
+</html>
